@@ -24,8 +24,13 @@
   [pin, value]
 */
 
-String currentVersion = "1.0";
+// using an LED strip?
+#include <FastLED.h>
+#define NUM_LEDS 60
+#define DATA_PIN 7
+CRGB leds[NUM_LEDS];
 
+String currentVersion = "1.0.1";
 #include <Controllino.h>
 
 // ****************************** //
@@ -78,6 +83,7 @@ boolean isSent[16]; // sent flags
 
 #include "swfunc.h";
 #include "listenerfunc.h";
+#include "ledfunc.h";
 
 void setup() {
   Serial.begin(9600);
@@ -96,10 +102,20 @@ void setup() {
   for (int j = 0; j < iocount1; j++) {
     pinMode (outputD[j], OUTPUT);
   }
+
+  // LED strip
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
 }
 
 void loop() {
   listenSerial(); // listen for serial message
   listenPins();
+
+    // testing first 3 LEDs
+  showLED (0, 255, 0, 0);
+  showLED (1, 0, 255, 0);
+  showLED (2, 0, 0, 255);
+  
 }
 
